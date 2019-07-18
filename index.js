@@ -17,14 +17,17 @@ function setupAudioFiltering(event) {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioContext = new AudioContext();
     console.log(audioContext.audioWorklet);
+
     const environ = audioContext.audioWorklet.addModule('cinema-gazer-processor.js').then(function() {
         // debugger;
         const cinemaGazerNode = new AudioWorkletNode(audioContext, 'cinema-gazer-processor')
         const videoElement = document.getElementById("video-1");
         let audioSource = audioContext.createMediaElementSource(videoElement);
+        audioSource.connect(cinemaGazerNode);
         // let audioFilter = audioContext.create
         cinemaGazerNode.connect(audioContext.destination);
         console.log("setupAudioFiltering complete!");
+    
         const environ = {
             cinemaGazerNode: cinemaGazerNode,
             videoElement: videoElement,
