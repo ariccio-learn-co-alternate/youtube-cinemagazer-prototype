@@ -14,12 +14,14 @@ function setupAudioFiltering(event) {
     // https://developer.mozilla.org/en-US/docs/Web/API/AudioWorkletProcessor
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioContext = new AudioContext();
-
-    audioContext.audioWorklet.addModule('cinema-gazer-processor.js')
-    const cinemaGazerNode = new AudioWorkletNode(audioContext, 'cinema-gazer-processor')
-    const videoElement = document.getElementById("video-1");
-    let audioSource = audioContext.createMediaElementSource(videoElement);
-    // let audioFilter = audioContext.create
-    cinemaGazerNode.connect(audioContext.destination);
-    console.log("setupAudioFiltering complete!");
+    console.log(audioContext.audioWorklet);
+    audioContext.audioWorklet.addModule('cinema-gazer-processor.js').then(function() {
+        // debugger;
+        const cinemaGazerNode = new AudioWorkletNode(audioContext, 'cinema-gazer-processor')
+        const videoElement = document.getElementById("video-1");
+        let audioSource = audioContext.createMediaElementSource(videoElement);
+        // let audioFilter = audioContext.create
+        cinemaGazerNode.connect(audioContext.destination);
+        console.log("setupAudioFiltering complete!");
+        })
 }

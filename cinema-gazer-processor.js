@@ -11,6 +11,10 @@ class CinemaGazerProcessor extends AudioWorkletProcessor {
 
 
     process (inputs, outputs, parameters) {
+        console.log(inputs)
+        console.log(outputs)
+        console.log(parameters);
+        
         return true;
     }
 }
