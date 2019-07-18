@@ -1,3 +1,5 @@
+// import { resolve } from "path";
+
 // import("/cinema-gazer-processor.js")
 
 
@@ -15,7 +17,7 @@ function setupAudioFiltering(event) {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioContext = new AudioContext();
     console.log(audioContext.audioWorklet);
-    audioContext.audioWorklet.addModule('cinema-gazer-processor.js').then(function() {
+    const environ = audioContext.audioWorklet.addModule('cinema-gazer-processor.js').then(function() {
         // debugger;
         const cinemaGazerNode = new AudioWorkletNode(audioContext, 'cinema-gazer-processor')
         const videoElement = document.getElementById("video-1");
@@ -23,5 +25,24 @@ function setupAudioFiltering(event) {
         // let audioFilter = audioContext.create
         cinemaGazerNode.connect(audioContext.destination);
         console.log("setupAudioFiltering complete!");
-        })
+        const environ = {
+            cinemaGazerNode: cinemaGazerNode,
+            videoElement: videoElement,
+            audioSource: audioSource
+        }
+        return environ;
+        }).then((environ) => {setupLibVad(environ);});
+
+}
+
+function setupLibVad(environ) {
+    const libVadOptions = {
+        source: environ["audioSource"],
+        voice_stop: () => { console.log("stop")},
+        voice_start: () => {console.log("start")}
+    }
+
+    // import("/vad/lib/vad.js");
+    const vad = new VAD(libVadOptions);
+    environ[vad] = vad;
 }
