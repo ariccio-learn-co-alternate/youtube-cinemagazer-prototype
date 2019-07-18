@@ -28,7 +28,7 @@ class CinemaGazerProcessor extends AudioWorkletProcessor {
         for (let channelNumber = 0; channelNumber < output.length; channelNumber++) {
             const outputChannel = output[channelNumber];
             // In here is where we fill the channel.
-            for (let i = 0; i < outputChannel.length; i++) {
+            for (let i = 0; i < (outputChannel.length); i++) {
                 outputChannel[i] = input[0][i]
             }
         }

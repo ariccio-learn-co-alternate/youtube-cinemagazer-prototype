@@ -38,27 +38,28 @@ function setupAudioFiltering(event) {
 
 }
 
-function setPlaybackDisplay(rate) {
-    document.querySelector("#playback").innerText = rate;
+function setPlaybackDisplay(rate, talking) {
+    document.querySelector("#playback").innerText = rate + talking;
 }
 
 function setupLibVad(environ) {
     const libVadOptions = {
-        source: environ["audioSource"],
+        source: environ["cinemaGazerNode"],
         voice_stop: () => {
             console.log("stop")
-            environ.videoElement.playbackRate = 3;
-            setPlaybackDisplay(3);
+            // environ.videoElement.playbackRate = 2;
+            setPlaybackDisplay(1, " not talking");
         },
         voice_start: () => {
             console.log("start")
             environ.videoElement.playbackRate = 1;
-            setPlaybackDisplay(1);
+            setPlaybackDisplay(1, " talking");
         },
         // energy_threshold_ratio_neg: 0.1,
         // energy_threshold_ratio_pos: 1.5
         // smoothingTimeConstant: 0.995
         // iterationPeriod
+        logging: true
     }
 
     // import("/vad/lib/vad.js");
