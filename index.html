@@ -2,6 +2,10 @@
   <form id="start-button-form" action="#" method="post">
     <input type="submit" id="start-button" value="start">
   </form>
+
+  <form id="shut-up" action="#" method="post">
+    <input type="submit" id="shut-up-button" value="shhh">
+  </form>
 <video id="video-1" controls="true" width="640" height="360" crossorigin="anonymous" controls="true">
     <source src="videos/js intro to ajax 060319-YwOeeCJmlDM.mp4" type="video/mp4">
   </video>
@@ -13,8 +17,32 @@
   
   <div id="playback">0</div>
 
+
+
+<div class="wrapper"></div>
+  <header>
+    <h1>frequency analyzer from <a href="https://github.com/mdn/voice-change-o-matic/blob/gh-pages/index.html">Voice-change-O-matic</a> for debugging</h1>
+  </header>
+
+  <canvas class="visualizer" width="640" height="100"></canvas> 
+
+  <form class="controls">
+    <div>
+      <label for="visual">Visualizer setting</label>
+      <select id="visual" name="visual">
+        <option value="sinewave">Sinewave</option>
+        <option value="frequencybars" selected>Frequency bars</option>
+        <option value="off">Off</option>
+      </select>
+    </div>
+    <div>
+      <a class="mute">Mute</a>
+    </div>
+  </form>
+</div>
+
 <!-- <script type="text/javascript" src="./cinema-gazer-processor.js"></script> -->
-<script type="text/javascript" src="/vad/lib/vad.js"></script>
+<script type="text/javascript" src="/vad.js"></script>
 
 <script type="text/javascript" src="./index.js"></script>
 </body>

@@ -8,7 +8,7 @@
       voice_stop: function() {},
       voice_start: function() {},
       smoothingTimeConstant: 0.99, 
-      energy_offset: 1e-8, // The initial offset.
+      energy_offset: 1e-10, // The initial offset.
       energy_threshold_ratio_pos: 2, // Signal must be twice the offset
       energy_threshold_ratio_neg: 0.5, // Signal must be half the offset
       energy_integration: 1, // Size of integration change compared to the signal per second.
@@ -20,6 +20,11 @@
       context: null
     };
 
+    const shhh = document.querySelector("#shut-up");
+    shhh.addEventListener('submit', (e)=> {
+      this.logging = false;
+      e.preventDefault();
+    })
     // User options
     for(var option in options) {
       if(options.hasOwnProperty(option)) {
@@ -72,8 +77,8 @@
     this.energy_threshold_neg = this.energy_offset * this.options.energy_threshold_ratio_neg;
 
     this.voiceTrend = 0;
-    this.voiceTrendMax = 10;
-    this.voiceTrendMin = -10;
+    this.voiceTrendMax = 100;
+    this.voiceTrendMin = -100;
     this.voiceTrendStart = 5;
     this.voiceTrendEnd = -5;
 
@@ -108,9 +113,9 @@
     this.options.source.connect(this.scriptProcessorNode);
 
     // log stuff
-    this.logging = false;
+    this.logging = true;
     this.log_i = 0;
-    this.log_limit = 100;
+    this.log_limit = 10000;
 
     this.triggerLog = function(limit) {
       this.logging = true;
@@ -121,7 +126,7 @@
     this.log = function(msg) {
       if(this.logging && this.log_i < this.log_limit) {
         this.log_i++;
-        console.log(msg);
+        console.log(`%c${msg}`, (this.vadState ? "color: green" : "color: red"));
       } else {
         this.logging = false;
       }
@@ -131,6 +136,10 @@
       // Update the local version of the Linear FFT
       var fft = this.floatFrequencyData;
       for(var i = 0, iLen = fft.length; i < iLen; i++) {
+        // if (fft[i] == -Infinity) {
+          // console.log(`fft[i] for i=${i} is -Infinity`)
+          // debugger;
+        // }
         this.floatFrequencyDataLinear[i] = Math.pow(10, fft[i] / 10);
       }
       this.ready = {};
@@ -181,7 +190,7 @@
       }
 
       // Integration brings in the real-time aspect through the relationship with the frequency this functions is called.
-      var integration = signal * this.iterationPeriod * this.options.energy_integration;
+      var integration = signal * (this.iterationPeriod/document.getElementById("video-1").playbackRate) * this.options.energy_integration;
 
       // Idea?: The integration is affected by the voiceTrend magnitude? - Not sure. Not doing atm.
 
@@ -206,7 +215,7 @@
       }
 
       this.log(
-        'e: ' + energy +
+        "%e: " + energy +
         ' | e_of: ' + this.energy_offset +
         ' | e+_th: ' + this.energy_threshold_pos +
         ' | e-_th: ' + this.energy_threshold_neg +
