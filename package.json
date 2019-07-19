@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/ariccio-learn-co-alternate/youtube-cinemagazer-prototype#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "node-vad": "^1.1.2"
   }
 }
