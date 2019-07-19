@@ -47,8 +47,8 @@ function setupLibVad(environ) {
         source: environ["cinemaGazerNode"],
         voice_stop: () => {
             console.log("stop")
-            // environ.videoElement.playbackRate = 2;
-            setPlaybackDisplay(1, " not talking");
+            environ.videoElement.playbackRate = 2;
+            setPlaybackDisplay(2, " not talking");
         },
         voice_start: () => {
             console.log("start")
